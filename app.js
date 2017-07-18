@@ -12,6 +12,6 @@ app.use(express.static('src/views'));
 app.get('/', function(req, res) {  
     res.send('<h1>Hello C# Corner.</h1>');  
 });  
-app.get('/articles', function(req, res) {  
-    res.send('<h1>Welcome to C# Corner Articles.</h1>');  
+app.get('/reports', function(req, res) {  
+    res.send('<h1>Welcome to PowerBI Reports</h1>');  
 });  
