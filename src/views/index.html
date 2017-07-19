@@ -43,14 +43,100 @@
     </nav>
     <div>
       This area is for embedding Power BI Dashboards/Reports
+      <div id="browse_app">
+           <!-- <a class="btn btn-large btn-info" href="/src/views/login.html">Browse</a> -->
+           Embed Token
+           <input type="text" id="txtAccessToken">
+      </div>
+      <div id="browse_app">
+           <!-- <a class="btn btn-large btn-info" href="/src/views/login.html">Browse</a> -->
+           Embed URL
+           <input type="text" id="txtReportEmbed">
+      </div>
+      <div id="browse_app">
+           <!-- <a class="btn btn-large btn-info" href="/src/views/login.html">Browse</a> -->
+           Report Id
+           <input type="text" id="txtEmbedReportId">
+      </div>
     </div>
+    <div>Embed View</div>
+    <div id="embedContainer" style="height: 596.632px;">
+   
+    </div>
+  <script src="js/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+   
+<script src="https://microsoft.github.io/PowerBI-JavaScript/demo/node_modules/powerbi-client/dist/powerbi.js"></script>
+
+<script>
+    // Read embed application token from textbox
+var txtAccessToken = $('#txtAccessToken').val();
+ 
+// Read embed URL from textbox
+var txtEmbedUrl = $('#txtReportEmbed').val();
+ 
+// Read report Id from textbox
+var txtEmbedReportId = $('#txtEmbedReportId').val();
+ 
+// Get models. models contains enums that can be used.
+var models = window['powerbi-client'].models;
+ 
+// We give All permissions to demonstrate switching between View and Edit mode and saving report.
+var permissions = models.Permissions.All;
+ 
+// Embed configuration used to describe the what and how to embed.
+// This object is used when calling powerbi.embed.
+// This also includes settings and options such as filters.
+// You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details.
+var config= {
+    type: 'report',
+    tokenType: models.TokenType.Embed,
+    accessToken: txtAccessToken,
+    embedUrl: txtEmbedUrl,
+    id: txtEmbedReportId,
+    permissions: permissions,
+    settings: {
+        filterPaneEnabled: true,
+        navContentPaneEnabled: true
+    }
+};
+ 
+// Get a reference to the embedded report HTML element
+var embedContainer = $('#embedContainer')[0];
+ 
+// Embed the report and display it within the div container.
+var report = powerbi.embed(embedContainer, config);
+ 
+// Report.off removes a given event handler if it exists.
+report.off("loaded");
+ 
+// Report.on will add an event handler which prints to Log window.
+report.on("loaded", function() {
+    Log.logText("Loaded");
+});
+ 
+report.on("error", function(event) {
+    Log.log(event.detail);
+     
+    report.off("error");
+});
+ 
+report.off("saved");
+report.on("saved", function(event) {
+    Log.log(event.detail);
+    if(event.detail.saveAs) {
+        Log.logText('In order to interact with the new report, create a new token and load the new report');
+     }
+ });
+
+    </script>
     
 
     <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+    
+    
+  
 
 </body>
 
