@@ -98,16 +98,19 @@ var permissions = models.Permissions.All;
 // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details.
 var config= {
     type: 'report',
-    tokenType: models.TokenType.Embed,
+    //tokenType: models.TokenType.Embed,
     accessToken: txtAccessToken,
     embedUrl: txtEmbedUrl,
-    id: txtEmbedReportId,
+    /*id: txtEmbedReportId,
     permissions: permissions,
     settings: {
         filterPaneEnabled: true,
         navContentPaneEnabled: true
-    }
+    }*/
 };
+
+
+
 
 // Get a reference to the embedded report HTML element
 var embedContainer = $('#embedContainer')[0];
@@ -116,10 +119,10 @@ var embedContainer = $('#embedContainer')[0];
 var report = powerbi.embed(embedContainer, config);
  
 // Report.off removes a given event handler if it exists.
-report.off("loaded");
+//report.off("loaded");
  
 // Report.on will add an event handler which prints to Log window.
-report.on("loaded", function() {
+/*report.on("loaded", function() {
     Log.logText("Loaded");
 });
  
@@ -135,7 +138,7 @@ report.on("saved", function(event) {
     if(event.detail.saveAs) {
         Log.logText('In order to interact with the new report, create a new token and load the new report');
      }
- });  
+ }); */ 
 
 /*var config = {
         type: 'dashboard',
