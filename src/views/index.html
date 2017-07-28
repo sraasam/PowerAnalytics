@@ -21,10 +21,10 @@
         <script type="text/javascript">
             // Set up ADAL
             var authContext = new AuthenticationContext({
-                clientId: '5c8076ef-0c7a-4ad3-a4b6-2bc3a6e6277f',
-               // 18058e13-f49f-4ff2-a29d-ecf8254e7d2a
+                clientId: '18058e13-f49f-4ff2-a29d-ecf8254e7d2a',
+               // 
                 //https://suntest.azurewebsites.net/.auth/login/aad/callback
-                postLogoutRedirectUri: 'https://suntest.azurewebsites.net/.auth/login/done'
+                postLogoutRedirectUri: 'https://suntest.azurewebsites.net/'
             });
             // Make an AJAX request to the Microsoft Graph API and print the response as JSON.
             var getCurrentUser = function (access_token) {
