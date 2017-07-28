@@ -23,7 +23,7 @@
             var authContext = new AuthenticationContext({
                 clientId: '18058e13-f49f-4ff2-a29d-ecf8254e7d2a',
                //5c8076ef-0c7a-4ad3-a4b6-2bc3a6e6277f 
-               
+
                 //https://suntest.azurewebsites.net/.auth/login/aad/callback
                 postLogoutRedirectUri: 'https://suntest.azurewebsites.net/'
             });
@@ -31,7 +31,9 @@
             var getCurrentUser = function (access_token) {
                 document.getElementById('api_response').textContent = 'Calling API...';
                 var xhr = new XMLHttpRequest();
-                xhr.open('GET', 'https://graph.microsoft.com/v1.0/me', true);
+                xhr.open('GET', 'https://analysis.windows.net/powerbi/api', true); 
+                //https://graph.microsoft.com/v1.0/me
+                
                 xhr.setRequestHeader('Authorization', 'Bearer ' + access_token);
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4 && xhr.status === 200) {
