@@ -31,9 +31,9 @@
             var getCurrentUser = function (access_token) {
                 document.getElementById('api_response').textContent = 'Calling API...';
                 var xhr = new XMLHttpRequest();
-                xhr.open('GET', 'https://analysis.windows.net/powerbi/api', true); 
-                //https://graph.microsoft.com/v1.0/me
-                
+                xhr.open('GET', 'https://graph.microsoft.com/v1.0/me', true); 
+                //https://analysis.windows.net/powerbi/api
+               
                 xhr.setRequestHeader('Authorization', 'Bearer ' + access_token);
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4 && xhr.status === 200) {
