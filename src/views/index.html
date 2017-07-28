@@ -33,7 +33,7 @@
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', 'https://graph.microsoft.com/v1.0/me', true); 
                 //https://analysis.windows.net/powerbi/api
-               
+
                 xhr.setRequestHeader('Authorization', 'Bearer ' + access_token);
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4 && xhr.status === 200) {
@@ -75,12 +75,28 @@
                                     'ERROR:\n\n' + error;
                                 return;
                             }
-                            console.log("access Token");
+                            console.log("POWER BI - access Token");
+                            console.log(token);
+                            // Use the access token
+                            //getCurrentUser(token);
+                        }
+                    );
+                    authContext.acquireToken(
+                        'https://graph.microsoft.com',
+                        function (error, token) {
+                            if (error || !token) {
+                                // TODO: Handle error obtaining access token
+                                document.getElementById('api_response').textContent =
+                                    'ERROR:\n\n' + error;
+                                return;
+                            }
+                            console.log("GRAPH API - access Token");
                             console.log(token);
                             // Use the access token
                             getCurrentUser(token);
                         }
                     );
+
                 } else {
                     document.getElementById('username').textContent = 'Not signed in.';
                 }
