@@ -81,7 +81,8 @@
                             // Use the access token
                             //getCurrentUser(token);
                             if(token){
-                              tokenGlobal = token;
+                              delete localStorage.tokenGlobal;
+                              localStorage.tokenGlobal = token;                          
                        window.location.href = "http://suntest.azurewebsites.net/home.html";
                     }
                         }
