@@ -64,7 +64,7 @@
                     document.getElementById('username').textContent = 'Signed in as: ' + user.userName;
                     document.getElementById('api_response').textContent = 'Getting access token...';
                     
-                    // Get an access token to the Microsoft Graph API
+                    // Get an access token to POER BI API and Microsoft Graph API
                     authContext.acquireToken(
                         //'https://graph.microsoft.com',
                         'https://analysis.windows.net/powerbi/api',
@@ -81,7 +81,10 @@
                             //getCurrentUser(token);
                         }
                     );
-                    authContext.acquireToken(
+                    if(token){
+                       window.location.href = "http://suntest.azurewebsites.net/home";
+                    }
+                    /*authContext.acquireToken(
                         'https://graph.microsoft.com',
                         function (error, token) {
                             if (error || !token) {
@@ -94,8 +97,10 @@
                             console.log(token);
                             // Use the access token
                             getCurrentUser(token);
+
                         }
-                    );
+                    );*/
+
 
                 } else {
                     document.getElementById('username').textContent = 'Not signed in.';
