@@ -9,6 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+
     <title>Ryder Analytics POC</title>
 
     <!-- Bootstrap Core CSS -->
@@ -16,7 +17,7 @@
 
     <!-- Custom CSS -->
     <link href="css/1-col-portfolio.css" rel="stylesheet">
-
+<script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.11/js/adal.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -63,6 +64,12 @@
            
          <button type="button" onclick="loadPowerBIReport()">Submit</button>
       </div>
+      <div id="browse_app">
+           <!-- <a class="btn btn-large btn-info" href="/src/views/login.html">Browse</a> -->
+           
+         <a href="#" onclick="authContext.logOut(); return false;">Log out</a>
+      </div>
+
     </div>
     <div>Embed View</div>
     <div id="embedContainer" style="height: 596.632px;">
