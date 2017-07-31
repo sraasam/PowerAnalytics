@@ -51,7 +51,7 @@
       <div>
             <button type="button" onclick="loadPowerBIView('loadnoreport')">LOAD NO REPORT</button>
             <button type="button" onclick="loadPowerBIView('PlantProjectedReport')">PLANT PROJECTED REPORT</button>
-            <button type="button" onclick="loadPowerBIView('eydashboard)">EY DASHBOARD</button>
+            <button type="button" onclick="loadPowerBIView('eydashboard')">EY DASHBOARD</button>
       </div>
      
       <!--<div id="browse_app">
@@ -79,6 +79,24 @@ function loadPowerBIView(viewName){
 console.log(viewName);
 console.log("Azure Active Directory Token::");
 console.log(localStorage.tokenGlobal);
+var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'https://api.powerbi.com/v1.0/myorg/groups', true); 
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.tokenGlobal);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                      console.log("Groups - XHR Response");
+                      console.log(xhr.responseText);
+                        // Do something with the response
+                       var groupsResponse = JSON.stringify(JSON.parse(xhr.responseText));
+                       console.log("groupsResponse");
+                      console.log(groupsResponse);
+                    } else {
+                        // TODO: Do something with the error (or non-200 responses)
+                        document.getElementById('api_response').textContent =
+                            'ERROR:\n\n' + xhr.responseText;
+                    }
+                };
+                xhr.send();
 }
 
 function loadPowerBIReport() {
