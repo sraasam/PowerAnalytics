@@ -90,10 +90,10 @@ console.log(localStorage.tokenGlobal);
         console.log(xhr.responseText);
 
         var responseArr = xhr.responseText.value;
-
+        var groupId = '';
         for (var i in responseArr) {
           if (responseArr[i].name === "ryderdemo") {
-            var groupId = responseArr[i].id;
+            groupId = responseArr[i].id;
           }
         }
         console.log("Group ID::");
