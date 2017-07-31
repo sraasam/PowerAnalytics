@@ -8,12 +8,10 @@
     </head>
     <body>
         <p>
-            A minimal sample app using ADAL.JS and vanilla JavaScript to obtain 
-            an access token from Azure Active Directory and make an API request.
+            NAVISHARE PORTAL - AZURE AD AUTHENTICATION
         </p>
         <p>
-            <a href="#" onclick="authContext.login(); return false;">Log in</a> |
-            <a href="#" onclick="authContext.logOut(); return false;">Log out</a>
+            <a href="#" onclick="authContext.login(); return false;">Log in</a>  
         </p>
         <p id="username"></p>
         <pre id="api_response"></pre>
@@ -23,8 +21,6 @@
             // Set up ADAL
             var authContext = new AuthenticationContext({
                 clientId: '18058e13-f49f-4ff2-a29d-ecf8254e7d2a',
-               //5c8076ef-0c7a-4ad3-a4b6-2bc3a6e6277f 
-
                 //https://suntest.azurewebsites.net/.auth/login/aad/callback
                 postLogoutRedirectUri: 'http://suntest.azurewebsites.net/'
             });
