@@ -134,6 +134,9 @@ var xhr = new XMLHttpRequest();
         console.log(reportId);
         console.log("Embed URL::");
         console.log(embedUrl);
+        if(reportId && embedUrl){
+          generateToken(reportId, embedUrl, groupId);
+        }
 
     } else {
       // TODO: Do something with the error (or non-200 responses)
@@ -142,6 +145,33 @@ var xhr = new XMLHttpRequest();
     }
   };
   xhr.send();
+}
+
+function generateToken(reportId, embedUrl, groupId){
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'https://api.powerbi.com/v1.0/myorg/groups/'+groupId+'/reports/'+reportId+'/GenerateToken', true);
+  xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.tokenGlobal);
+  xhr.setRequestHeader('Content-Type', application/json; charset=utf-8);
+var bodyParams = {
+  "accessLevel": "View"
+};
+  xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        console.log("Generate Token - XHR Response");
+        console.log(JSON.parse(xhr.responseText));
+        var responseJson = JSON.parse(xhr.responseText);
+        console.log("Generate Token - JSON Response");
+        console.log(responseJson);
+        console.log("Generate Token - token");
+        console.log(responseJson.token);
+    } else {
+      // TODO: Do something with the error (or non-200 responses)
+      document.getElementById('api_response').textContent =
+        'ERROR:\n\n' + xhr.responseText;
+    }
+  };
+  xhr.send(bodyParams);
+
 }
 
 function loadPowerBIReport() {
