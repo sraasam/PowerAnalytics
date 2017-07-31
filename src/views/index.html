@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Minimal sample using ADAL.JS</title>
+        <title>V2Soft - Navishare Portal POC</title>
         <meta charset="utf-8" />
         <style type="text/css">body { font-family: Tahoma; padding: 3em; }</style>
         <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.11/js/adal.min.js"></script>
@@ -21,6 +21,7 @@
             // Set up ADAL
             var authContext = new AuthenticationContext({
                 clientId: '18058e13-f49f-4ff2-a29d-ecf8254e7d2a',
+
                 //https://suntest.azurewebsites.net/.auth/login/aad/callback
                 postLogoutRedirectUri: 'http://suntest.azurewebsites.net/'
             });
@@ -62,7 +63,7 @@
                     document.getElementById('api_response').textContent = 'Getting access token...';
                     
                     // Get an access token to POER BI API and Microsoft Graph API
-                    authContext.acquireToken(
+                    /*authContext.acquireToken(
                         //'https://graph.microsoft.com',
                         'https://analysis.windows.net/powerbi/api',
                         function (error, token) {
@@ -82,7 +83,34 @@
                        window.location.href = "http://suntest.azurewebsites.net/home.html";
                     }
                         }
-                    );
+                    );*/
+                    var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'https://login.windows.net/common/oauth2/token', true);
+  xhr.setRequestHeader('Content-Type', "application/x-www-form-urlencoded");
+var bodyParams="grant_type="+'password'+"&scope="+'openid'+"&resource="+'https://analysis.windows.net/powerbi/api'+"&client_id="+'18058e13-f49f-4ff2-a29d-ecf8254e7d2a'+"&username="+'sraasam@v2soft.com'+"&password="+'Lemon2016';
+
+  xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        console.log("Generate Token - XHR Response");
+        console.log(JSON.parse(xhr.responseText));
+        var responseJson = JSON.parse(xhr.responseText);
+        console.log("Generate Token - JSON Response");
+        console.log(responseJson);
+        console.log("Generate Token - token");
+        console.log(responseJson.access_token);
+        if (responseJson.access_token) {
+          delete localStorage.tokenGlobal;
+          localStorage.tokenGlobal = responseJson.access_token;
+          window.location.href = "http://suntest.azurewebsites.net/home.html";
+        }
+        
+    } else {
+      // TODO: Do something with the error (or non-200 responses)
+      document.getElementById('api_response').textContent =
+        'ERROR:\n\n' + xhr.responseText;
+    }
+  };
+  xhr.send(JSON.stringify(bodyParams));
 
                     /*authContext.acquireToken(
                         'https://graph.microsoft.com',
