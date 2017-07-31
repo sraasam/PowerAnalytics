@@ -165,7 +165,7 @@ var bodyParams = {
         console.log("Generate Token - token");
         console.log(responseJson.token);
         if(responseJson.token){
-         embedPowerBIReport(embedToken, reportId, responseJson.token);
+         embedPowerBIReport(responseJson.token, reportId, embedUrl);
         }
     } else {
       // TODO: Do something with the error (or non-200 responses)
