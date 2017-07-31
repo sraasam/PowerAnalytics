@@ -170,7 +170,7 @@ var bodyParams = {
         'ERROR:\n\n' + xhr.responseText;
     }
   };
-  xhr.send(bodyParams);
+  xhr.send(JSON.stringify(bodyParams));
 
 }
 
