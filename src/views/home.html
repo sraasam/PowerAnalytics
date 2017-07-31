@@ -79,24 +79,37 @@ function loadPowerBIView(viewName){
 console.log(viewName);
 console.log("Azure Active Directory Token::");
 console.log(localStorage.tokenGlobal);
-var xhr = new XMLHttpRequest();
-                xhr.open('GET', 'https://api.powerbi.com/v1.0/myorg/groups', true); 
-                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.tokenGlobal);
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                      console.log("Groups - XHR Response");
-                      console.log(xhr.responseText);
-                        // Do something with the response
-                       var groupsResponse = JSON.stringify(JSON.parse(xhr.responseText));
-                       console.log("groupsResponse");
-                      console.log(groupsResponse);
-                    } else {
-                        // TODO: Do something with the error (or non-200 responses)
-                        document.getElementById('api_response').textContent =
-                            'ERROR:\n\n' + xhr.responseText;
-                    }
-                };
-                xhr.send();
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://api.powerbi.com/v1.0/myorg/groups', true);
+  xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.tokenGlobal);
+  xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        console.log("Groups - XHR Response");
+        console.log(xhr.responseText);
+        console.log("Groups - XHR Response");
+        console.log(xhr.responseText);
+
+        var responseArr = xhr.responseText.value;
+
+        for (var i in responseArr) {
+          if (responseArr[i].name === "ryderdemo") {
+            var groupId = responseArr[i].id;
+          }
+        }
+        console.log("Group ID::");
+        console.log(groupId);
+      // Do something with the response
+      /* var groupsResponse = JSON.stringify(JSON.parse(xhr.responseText));
+       console.log("groupsResponse");
+      console.log(groupsResponse);*/
+
+    } else {
+      // TODO: Do something with the error (or non-200 responses)
+      document.getElementById('api_response').textContent =
+        'ERROR:\n\n' + xhr.responseText;
+    }
+  };
+  xhr.send();
 }
 
 function loadPowerBIReport() {
