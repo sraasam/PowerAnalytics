@@ -98,10 +98,42 @@ console.log(localStorage.tokenGlobal);
         }
         console.log("Group ID::");
         console.log(groupId);
-      // Do something with the response
-      /* var groupsResponse = JSON.stringify(JSON.parse(xhr.responseText));
-       console.log("groupsResponse");
-      console.log(groupsResponse);*/
+        if(groupId){
+          fetchReportByGroupId(groupId, viewName);
+        }
+
+    } else {
+      // TODO: Do something with the error (or non-200 responses)
+      document.getElementById('api_response').textContent =
+        'ERROR:\n\n' + xhr.responseText;
+    }
+  };
+  xhr.send();
+}
+
+function fetchReportByGroupId(groupId, viewName){
+var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://api.powerbi.com/v1.0/myorg/groups/'+groupId+'/reports', true);
+  xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.tokenGlobal);
+  xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        console.log("Reports - XHR Response");
+        console.log(JSON.parse(xhr.responseText));
+        var responseJson = JSON.parse(xhr.responseText);
+        var responseArr = responseJson.value;
+        console.log("Reports - responseArr");
+        console.log(responseArr);
+        var reportId = '', embedUrl = '';
+        for (var i in responseArr) {
+          if (responseArr[i].name === viewName) {
+            reportId = responseArr[i].id;
+            embedUrl = responseArr[i].embedUrl;
+          }
+        }
+        console.log("Report ID::");
+        console.log(reportId);
+        console.log("Embed URL::");
+        console.log(embedUrl);
 
     } else {
       // TODO: Do something with the error (or non-200 responses)
