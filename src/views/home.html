@@ -42,7 +42,7 @@
             <!-- /.navbar-collapse -->
         </div>
          <div style="float: left; padding-left: 1400px;">
-         <a style="font-size: 20px;"  href="#" onclick="authContext.logOut(); return false;">Log out</a>
+         <a style="font-size: 20px;"  href="#" onclick="clearToken(); authContext.logOut(); return false;">Log out</a>
       </div>
         <!-- /.container -->
     </nav>
@@ -74,6 +74,10 @@ var authContext = new AuthenticationContext({
   //https://suntest.azurewebsites.net/.auth/login/aad/callback
   postLogoutRedirectUri: 'http://suntest.azurewebsites.net/'
 });
+
+function clearToken(){
+  delete localStorage.tokenGlobal;
+}
 
 function loadPowerBIView(viewName){
 console.log(viewName);
