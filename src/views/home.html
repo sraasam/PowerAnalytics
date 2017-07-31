@@ -85,10 +85,11 @@ console.log(localStorage.tokenGlobal);
   xhr.onreadystatechange = function() {
       if (xhr.readyState === 4 && xhr.status === 200) {
         console.log("Groups - XHR Response");
-        console.log(xhr.responseText);
-        var responseArr = xhr.responseText.value;
+        console.log(xhr.responseJson);
+       // var responseJson = xhr.responseJson;
+        var responseArr = xhr.responseJson.value;
         console.log("Groups - responseArr");
-        console.log(xhr.responseText.value);
+        console.log(responseArr);
         var groupId = '';
         for (var i in responseArr) {
           if (responseArr[i].name === "ryderdemo") {
