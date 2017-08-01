@@ -61,6 +61,22 @@
                 if (user) {
                     document.getElementById('username').textContent = 'Signed in as: ' + user.userName;
                     document.getElementById('api_response').textContent = 'Getting access token...';
+                    var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'https://suntest.azurewebsites.net/getAadToken', true); 
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        // Do something with the response
+                        console.log(xhr.responseText);
+                          if(xhr.responseText){
+                            delete localStorage.tokenGlobal;
+                            localStorage.tokenGlobal = xhr.responseText;        
+                       window.location.href = "http://suntest.azurewebsites.net/home.html";
+                          }
+                    } else {
+                       
+                    }
+                };
+                xhr.send();
                     
                     // Get an access token to POER BI API and Microsoft Graph API
                     /*authContext.acquireToken(
@@ -84,28 +100,6 @@
                     }
                         }
                     );*/
-                    var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'https://login.windows.net/common/oauth2/token', true);
-  xhr.setRequestHeader('Content-Type', "application/x-www-form-urlencoded");
-  xhr.setRequestHeader( 'Access-Control-Allow-Origin', 'http://suntest.azurewebsites.net');
-  xhr.setRequestHeader('Access-Control-Allow-Methods', 'POST');
- xhr.setRequestHeader('Access-Control-Allow-Credentials', 'true');
-var bodyParams="grant_type="+'password'+"&scope="+'openid'+"&resource="+'https://analysis.windows.net/powerbi/api'+"&client_id="+'18058e13-f49f-4ff2-a29d-ecf8254e7d2a'+"&username="+'sraasam@v2soft.com'+"&password="+'Lemon2016';
-
-  xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        console.log("Generate Token - XHR Response");
-        console.log(JSON.parse(xhr.responseText));
-        var responseJson = JSON.parse(xhr.responseText);
-        console.log("Generate Token - JSON Response");
-        console.log(responseJson);
-        console.log("Generate Token - token");
-        console.log(responseJson.access_token);
-        if (responseJson.access_token) {
-          delete localStorage.tokenGlobal;
-          localStorage.tokenGlobal = responseJson.access_token;
-          window.location.href = "http://suntest.azurewebsites.net/home.html";
-        }
          
     } else {
       // TODO: Do something with the error (or non-200 responses)
