@@ -1,7 +1,9 @@
+var request = require('request');
 var express = require('express'); //including express   
 var app = new express(); // Creating instance  
 var path = require('path'),
     fs = require('fs'); 
+    var aadToken = '';
 var port = process.env.PORT || 1337;// setting port for the application   
 //Following function is starts sockets and start listen from particular port. In following code I have given call back which contains err. So when port willbe start and listen function will be fire then this function will be execute.   
 app.listen(port, function(err) {  
@@ -18,7 +20,44 @@ app.get('/', function(req, res) {
 });  
 
 app.get('/login', function(req, res) {  
+	request('http://www.google.com', function(error, response, body) {
+				console.log('error:', error); // Print the error if one occurred 
+				console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received 
+				console.log('body:', body); // Print the HTML for the Google homepage.
+				res.send(response);
+});
+	//res.send("Make a sample REST call at Node JS Server");
    // res.send('<h1>Welcome to PowerBI Reports</h1>');  
    // res.sendFile('src/views/home.html');
-    res.sendFile('login.html', { root: './src/views/'});
+    //res.sendFile('login.html', { root: './src/views/'});
+});
+
+app.get('/getAadToken', function(req, res) {
+	
+			var json = {};
+			request({
+				url: 'https://login.windows.net/common/oauth2/token',
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				form: {
+					'grant_type': 'password',
+					'scope': 'openid',
+					'resource': 'https://analysis.windows.net/powerbi/api',
+					'client_id': '18058e13-f49f-4ff2-a29d-ecf8254e7d2a',
+					'username': 'sraasam@v2soft.com',
+					'password': 'Lemon2016'
+				}
+
+			}, function(error, response, body) {
+				json = JSON.parse(response.body);
+				aadToken = json.access_token;
+				//res.send(JSON.stringify(json.access_token));
+				console.log("Access Token:", json.access_token);
+                res.send(json.access_token);  
+
+			});
+          
+			
 }); 
