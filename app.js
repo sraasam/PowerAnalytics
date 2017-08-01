@@ -53,7 +53,7 @@ app.get('/getAadToken', function(req, res) {
 		json = JSON.parse(response.body);
 		//res.send(JSON.stringify(json.access_token));
 		console.log("Access Token:", json.access_token);
-		res.setHeader('Access-Control-Allow-Origin', 'http://suntest.azurewebsites.net/');
+		res.setHeader('Access-Control-Allow-Origin', 'http://suntest.azurewebsites.net');
 		res.send(json.access_token);
 
 	});
