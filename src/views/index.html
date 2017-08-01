@@ -56,27 +56,27 @@
                         'ERROR:\n\n' + err;
                 }
             } else {
-                // If logged in, get access token and make an API request
-                var user = authContext.getCachedUser();
-                if (user) {
-                    document.getElementById('username').textContent = 'Signed in as: ' + user.userName;
-                    document.getElementById('api_response').textContent = 'Getting access token...';
-                    var xhr = new XMLHttpRequest();
-                xhr.open('GET', 'https://suntest.azurewebsites.net/getAadToken', true); 
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        // Do something with the response
-                        console.log(xhr.responseText);
-                          if(xhr.responseText){
-                            delete localStorage.tokenGlobal;
-                            localStorage.tokenGlobal = xhr.responseText;        
-                       window.location.href = "http://suntest.azurewebsites.net/home.html";
-                          }
-                    } else {
-                       
-                    }
-                };
-                xhr.send();
+  // If logged in, get access token and make an API request
+  var user = authContext.getCachedUser();
+  if (user) {
+    document.getElementById('username').textContent = 'Signed in as: ' + user.userName;
+    document.getElementById('api_response').textContent = 'Getting access token...';
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://suntest.azurewebsites.net/getAadToken', true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        console.log("xhr.responseText");
+        console.log(xhr.responseText);
+        if (xhr.responseText) {
+          delete localStorage.tokenGlobal;
+          localStorage.tokenGlobal = xhr.responseText;
+          window.location.href = "http://suntest.azurewebsites.net/home.html";
+        }
+      } else {
+
+      }
+    };
+    xhr.send();
                     
                     // Get an access token to POER BI API and Microsoft Graph API
                     /*authContext.acquireToken(
@@ -100,14 +100,7 @@
                     }
                         }
                     );*/
-         
-    } else {
-      // TODO: Do something with the error (or non-200 responses)
-      document.getElementById('api_response').textContent =
-        'ERROR:\n\n' + xhr.responseText;
-    }
-  };
-  xhr.send(JSON.stringify(bodyParams));
+                    
 
                     /*authContext.acquireToken(
                         'https://graph.microsoft.com',
