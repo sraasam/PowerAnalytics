@@ -55,9 +55,13 @@ app.get('/getAadToken', function(req, res) {
 				aadToken = json.access_token;
 				//res.send(JSON.stringify(json.access_token));
 				console.log("Access Token:", json.access_token);
+				res.setHeader('Access-Control-Allow-Origin', '*');
                 res.send(json.access_token);  
 
 			});
           
+   /* res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'); // If needed
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,contenttype'); // If needed
+    res.setHeader('Access-Control-Allow-Credentials', true); // If needed*/
 			
 }); 
