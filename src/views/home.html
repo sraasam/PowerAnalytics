@@ -49,14 +49,10 @@
     <div>
       Click on the Report/Dashboard to Display
       <div>
-            <button type="button" onclick="loadPowerBIView('loadnoreport')">LOAD NO REPORT</button>
-            <button type="button" onclick="loadPowerBIView('PlantProjectedReport')">PLANT PROJECTED REPORT</button>
-            <button type="button" onclick="loadPowerBIView('eydashboard')">EY DASHBOARD</button>
+            <button type="button" onclick="loadPowerBIReport('loadnoreport')">LOAD NO REPORT</button>
+            <button type="button" onclick="loadPowerBIReport('PlantProjectedReport')">PLANT PROJECTED REPORT</button>
+            <button type="button" onclick="loadPowerBIDashboard('eydashboard')">EY DASHBOARD</button>
       </div>
-     
-      <!--<div id="browse_app">
-         <button type="button" onclick="loadPowerBIReport()">Submit</button>
-      </div>-->
     </div>
     <div>Embed View</div>
     <div id="embedContainer" style="height: 596.632px;">
@@ -79,32 +75,133 @@ function clearToken(){
   delete localStorage.tokenGlobal;
 }
 
-function loadPowerBIView(viewName){
-console.log(viewName);
-console.log("Azure Active Directory Token::");
-console.log(localStorage.tokenGlobal);
+function loadPowerBIDashboard(dashboardName) {
+  //Get groupId by calling Power BI REST Endpoint /groups 
+  var groupId = getGroups();
+  var dashboardId = '',
+    embedUrl = '',
+    embedToken = '';
+  if (groupId) {
+    var dashboardsJson = {};
+    //Get dashboards using the groupId
+    dashboardJson = getDashboards(groupId);
+    //Get dashboardId and embedUrl for the given dashboardName
+    var dashboardArr = dashboardJson.value;
+    for (var i in dashboardArr) {
+      if (dashboardArr[i].displayName === dashboardName) {
+        dashboardId = dashboardArr[i].id;
+        embedUrl = dashboardArr[i].embedUrl;
+      }
+    }
+    //If (dashboardId && embedUrl), generate embedtoken for the dashboard
+    if (dashboardId && embedUrl) {
+      embedToken = generateTokenForDashboard(groupId, dashboardId);
+    }
+    //Embed dashboard using embedToken, embedUrl for the dashboard
+    // Get models. models contains enums that can be used.
+    var models = window['powerbi-client'].models;
+    var permissions = models.Permissions.All;
+    var config = {
+      type: 'dashboard',
+      accessToken: embedToken,
+      embedUrl: embedUrl,
+      tokenType: models.TokenType.Embed,
+    };
+    // Grab the reference to the div HTML element that will host the dashboard.
+    var dashboardContainer = $('#embedContainer')[0];
+    // Embed the dashboard and display it within the div container.
+    var dashboard = powerbi.embed(dashboardContainer, config);
+  }
+}
+
+function generateTokenForDashboard(groupId, dashboardId) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'https://api.powerbi.com/v1.0/myorg/groups/' + groupId + '/dashboards/' + dashboardId + '/GenerateToken', true);
+  xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.tokenGlobal);
+  xhr.setRequestHeader('Content-Type', "application/json; charset=utf-8");
+  var bodyParams = {
+    "accessLevel": "View"
+  };
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      var responseJson = JSON.parse(xhr.responseText);
+      if (responseJson.token) {
+        return responseJson.token;
+      }
+    } else {
+    }
+  };
+  xhr.send(JSON.stringify(bodyParams));
+}
+
+function getDashboards(groupId) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://api.powerbi.com/v1.0/myorg/groups/' + groupId + '/dashboards', true);
+  xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.tokenGlobal);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      var responseJson = JSON.parse(xhr.responseText);
+      return responseJson;
+    } else {
+      //Not a Success
+    }
+  };
+  xhr.send();
+}
+
+function getGroups() {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://api.powerbi.com/v1.0/myorg/groups', true);
   xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.tokenGlobal);
   xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        console.log("Groups - XHR Response");
-        console.log(JSON.parse(xhr.responseText));
-        var responseJson = JSON.parse(xhr.responseText);
-        var responseArr = responseJson.value;
-        console.log("Groups - responseArr");
-        console.log(responseArr);
-        var groupId = '';
-        for (var i in responseArr) {
-          if (responseArr[i].name === "ryderdemo") {
-            groupId = responseArr[i].id;
-          }
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      var responseJson = JSON.parse(xhr.responseText);
+      var responseArr = responseJson.value;
+      var groupId = '';
+      for (var i in responseArr) {
+        if (responseArr[i].name === "ryderdemo") {
+          groupId = responseArr[i].id;
         }
-        console.log("Group ID::");
-        console.log(groupId);
-        if(groupId){
-          fetchReportByGroupId(groupId, viewName);
+      }
+      if (groupId) {
+        return groupId;
+      } else {
+        return false;
+      }
+
+    } else {
+      //Not a Success
+    }
+  };
+  xhr.send();
+}
+
+function loadPowerBIReport(reportName){
+  console.log(reportName);
+  console.log("Azure Active Directory Token::");
+  console.log(localStorage.tokenGlobal);
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://api.powerbi.com/v1.0/myorg/groups', true);
+  xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.tokenGlobal);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      console.log("Groups - XHR Response");
+      console.log(JSON.parse(xhr.responseText));
+      var responseJson = JSON.parse(xhr.responseText);
+      var responseArr = responseJson.value;
+      console.log("Groups - responseArr");
+      console.log(responseArr);
+      var groupId = '';
+      for (var i in responseArr) {
+        if (responseArr[i].name === "ryderdemo") {
+          groupId = responseArr[i].id;
         }
+      }
+      console.log("Group ID::");
+      console.log(groupId);
+      if (groupId) {
+        fetchReportByGroupId(groupId, reportName);
+      }
 
     } else {
       // TODO: Do something with the error (or non-200 responses)
@@ -115,32 +212,33 @@ console.log(localStorage.tokenGlobal);
   xhr.send();
 }
 
-function fetchReportByGroupId(groupId, viewName){
-var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://api.powerbi.com/v1.0/myorg/groups/'+groupId+'/reports', true);
+function fetchReportByGroupId(groupId, reportName){
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://api.powerbi.com/v1.0/myorg/groups/' + groupId + '/reports', true);
   xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.tokenGlobal);
   xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        console.log("Reports - XHR Response");
-        console.log(JSON.parse(xhr.responseText));
-        var responseJson = JSON.parse(xhr.responseText);
-        var responseArr = responseJson.value;
-        console.log("Reports - responseArr");
-        console.log(responseArr);
-        var reportId = '', embedUrl = '';
-        for (var i in responseArr) {
-          if (responseArr[i].name === viewName) {
-            reportId = responseArr[i].id;
-            embedUrl = responseArr[i].embedUrl;
-          }
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      console.log("Reports - XHR Response");
+      console.log(JSON.parse(xhr.responseText));
+      var responseJson = JSON.parse(xhr.responseText);
+      var responseArr = responseJson.value;
+      console.log("Reports - responseArr");
+      console.log(responseArr);
+      var reportId = '',
+        embedUrl = '';
+      for (var i in responseArr) {
+        if (responseArr[i].name === reportName) {
+          reportId = responseArr[i].id;
+          embedUrl = responseArr[i].embedUrl;
         }
-        console.log("Report ID::");
-        console.log(reportId);
-        console.log("Embed URL::");
-        console.log(embedUrl);
-        if(reportId && embedUrl){
-          generateToken(reportId, embedUrl, groupId);
-        }
+      }
+      console.log("Report ID::");
+      console.log(reportId);
+      console.log("Embed URL::");
+      console.log(embedUrl);
+      if (reportId && embedUrl) {
+        generateToken(reportId, embedUrl, groupId);
+      }
 
     } else {
       // TODO: Do something with the error (or non-200 responses)
@@ -213,48 +311,6 @@ var report = powerbi.embed(embedContainer, config);
  console.log(config);
 }
 
-function loadPowerBIReport() {
-
-  // Read embed application token from textbox
-  var txtAccessToken = $('#txtAccessToken').val();
-
-  // Read embed URL from textbox
-  var txtEmbedUrl = $('#txtReportEmbed').val();
-
-  // Read report Id from textbox
-  var txtEmbedReportId = $('#txtEmbedReportId').val();
-
-  // Get models. models contains enums that can be used.
-  var models = window['powerbi-client'].models;
-
-  // We give All permissions to demonstrate switching between View and Edit mode and saving report.
-  var permissions = models.Permissions.All;
-
-  // Embed configuration used to describe the what and how to embed.
-  // This object is used when calling powerbi.embed.
-  // This also includes settings and options such as filters.
-  // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details.
-  var config = {
-    type: 'report',
-    accessToken: txtAccessToken,
-    embedUrl: txtEmbedUrl,
-    tokenType: models.TokenType.Embed,
-    id: txtEmbedReportId,
-     // permissions: permissions,
-      settings: {
-          filterPaneEnabled: true,
-          navContentPaneEnabled: true
-      }
-  };
-// Get a reference to the embedded report HTML element
-var embedContainer = $('#embedContainer')[0];
-// Embed the report and display it within the div container.
-var report = powerbi.embed(embedContainer, config);
- 
- console.log("config");
- console.log(config);
-
-}
 </script>
     
 </body>
