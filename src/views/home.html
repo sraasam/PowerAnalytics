@@ -162,7 +162,7 @@ function getDashboards(groupId) {
 
 function getGroups() {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://api.powerbi.com/v1.0/myorg/groups', true);
+  xhr.open('GET', 'https://api.powerbi.com/v1.0/myorg/groups', false);
   xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.tokenGlobal);
   xhr.send();
   if (xhr.readyState == 4 && xhr.status === 200) {
