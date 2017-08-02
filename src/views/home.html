@@ -79,6 +79,7 @@ function loadPowerBIDashboard(dashboardName) {
   var dashboardId = '', embedUrl = '', embedToken = '', groupsJson = {}, groupId = '';
   //Get groupId by calling Power BI REST Endpoint /groups 
   groupsJson = getGroups();
+  console.log("groupsJson = "+groupsJson);
   var responseArr = groupsJson.value;
   for (var i in responseArr) {
     if (responseArr[i].name === "ryderdemo") {
