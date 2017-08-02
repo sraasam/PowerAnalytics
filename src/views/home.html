@@ -149,11 +149,12 @@ function getDashboards(groupId) {
   xhr.open('GET', 'https://api.powerbi.com/v1.0/myorg/groups/' + groupId + '/dashboards', true);
   xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.tokenGlobal);
   xhr.onreadystatechange = function() {
-    if (xhr.readyState === 4 && xhr.status === 200) {
+    if (xhr.status === 200) {
       var responseJson = JSON.parse(xhr.responseText);
       return responseJson;
     } else {
       //Not a Success
+       return "{}";
     }
   };
   xhr.send();
@@ -164,9 +165,9 @@ function getGroups() {
   xhr.open('GET', 'https://api.powerbi.com/v1.0/myorg/groups', true);
   xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.tokenGlobal);
   xhr.onreadystatechange = function() {
-    if (xhr.readyState === 4 && xhr.status === 200) {
+    if (xhr.status === 200) {
       var responseJson = JSON.parse(xhr.responseText);
-      return responseJson;
+      
       /*var responseArr = responseJson.value;
       for (var i in responseArr) {
         if (responseArr[i].name === "ryderdemo") {
@@ -178,9 +179,10 @@ function getGroups() {
       } else {
         return false;
       }*/
-
+    return responseJson;
     } else {
       //Not a Success
+      return "{}";
     }
   };
   xhr.send();
