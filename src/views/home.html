@@ -78,7 +78,20 @@ function clearToken(){
 function loadPowerBIDashboard(dashboardName) {
   var dashboardId = '', embedUrl = '', embedToken = '', groupsJson = {}, groupId = '';
   //Get groupId by calling Power BI REST Endpoint /groups 
-  groupsJson = getGroups();
+ // groupsJson = getGroups();
+    var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://api.powerbi.com/v1.0/myorg/groups', true);
+  xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.tokenGlobal);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState==4 && xhr.status === 200) {
+      var responseJson = JSON.parse(xhr.responseText);
+      groupsJson = responseJson;
+    } else {
+      //Not a Success
+      return "{}";
+    }
+  };
+  xhr.send();
   console.log("groupsJson = "+groupsJson);
   var responseArr = groupsJson.value;
   for (var i in responseArr) {
@@ -158,7 +171,6 @@ function getDashboards(groupId) {
     }
   };
   xhr.send();
-  return xhr.onreadystatechange();
 }
 
 function getGroups() {
@@ -187,7 +199,6 @@ function getGroups() {
     }
   };
   xhr.send();
-   return xhr.onreadystatechange();
 }
 
 function loadPowerBIReport(reportName){
