@@ -126,22 +126,22 @@ function loadPowerBIDashboard(dashboardName) {
 
 function generateTokenForDashboard(groupId, dashboardId) {
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'https://api.powerbi.com/v1.0/myorg/groups/' + groupId + '/dashboards/' + dashboardId + '/GenerateToken', true);
+  xhr.open('POST', 'https://api.powerbi.com/v1.0/myorg/groups/' + groupId + '/dashboards/' + dashboardId + '/GenerateToken', false);
   xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.tokenGlobal);
   xhr.setRequestHeader('Content-Type', "application/json; charset=utf-8");
   var bodyParams = {
     "accessLevel": "View"
   };
-  xhr.onreadystatechange = function() {
+  xhr.send(JSON.stringify(bodyParams));
     if (xhr.readyState === 4 && xhr.status === 200) {
       var responseJson = JSON.parse(xhr.responseText);
       if (responseJson.token) {
         return responseJson.token;
       }
     } else {
+      return "";
     }
-  };
-  xhr.send(JSON.stringify(bodyParams));
+ 
 }
 
 function getDashboards(groupId) {
