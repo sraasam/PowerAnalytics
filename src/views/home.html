@@ -78,20 +78,7 @@ function clearToken(){
 function loadPowerBIDashboard(dashboardName) {
   var dashboardId = '', embedUrl = '', embedToken = '', groupsJson = {}, groupId = '';
   //Get groupId by calling Power BI REST Endpoint /groups 
- // groupsJson = getGroups();
-    var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://api.powerbi.com/v1.0/myorg/groups', true);
-  xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.tokenGlobal);
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState==4 && xhr.status === 200) {
-      var responseJson = JSON.parse(xhr.responseText);
-      groupsJson = responseJson;
-    } else {
-      //Not a Success
-      return "{}";
-    }
-  };
-  xhr.send();
+  groupsJson = getGroups();
   console.log("groupsJson = "+groupsJson);
   var responseArr = groupsJson.value;
   for (var i in responseArr) {
@@ -177,28 +164,24 @@ function getGroups() {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://api.powerbi.com/v1.0/myorg/groups', true);
   xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.tokenGlobal);
-  xhr.onreadystatechange = function() {
+  xhr.send();
+  if (xhr.readyState == 4 && xhr.status === 200) {
+    var responseJson = JSON.parse(xhr.responseText);
+    return responseJson;  
+  } else {
+    return false;
+  }
+
+  /*xhr.onreadystatechange = function() {
     if (xhr.readyState==4 && xhr.status === 200) {
       var responseJson = JSON.parse(xhr.responseText);
-       return responseJson;
-      /*var responseArr = responseJson.value;
-      for (var i in responseArr) {
-        if (responseArr[i].name === "ryderdemo") {
-          groupId = responseArr[i].id;
-        }
-      }
-      if (groupId) {
-        return groupId;
-      } else {
-        return false;
-      }*/
-   
+      return true;
     } else {
       //Not a Success
       return "{}";
     }
-  };
-  xhr.send();
+  };*/
+
 }
 
 function loadPowerBIReport(reportName){
