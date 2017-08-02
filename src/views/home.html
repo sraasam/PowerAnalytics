@@ -76,11 +76,18 @@ function clearToken(){
 }
 
 function loadPowerBIDashboard(dashboardName) {
+  var dashboardId = '', embedUrl = '', embedToken = '', groupsJson = {}, groupId = '';
   //Get groupId by calling Power BI REST Endpoint /groups 
-  var groupId = getGroups();
-  var dashboardId = '',
-    embedUrl = '',
-    embedToken = '';
+  groupsJson = getGroups();
+  var responseArr = groupsJson.value;
+  for (var i in responseArr) {
+    if (responseArr[i].name === "ryderdemo") {
+      groupId = responseArr[i].id;
+
+    }
+  }
+  console.log("groupId");
+  console.log(groupId);
   if (groupId) {
     var dashboardsJson = {};
     //Get dashboards using the groupId
@@ -93,6 +100,7 @@ function loadPowerBIDashboard(dashboardName) {
         embedUrl = dashboardArr[i].embedUrl;
       }
     }
+    console.log("dashboardId = "+dashboardId+"embedUrl = "+embedUrl);
     //If (dashboardId && embedUrl), generate embedtoken for the dashboard
     if (dashboardId && embedUrl) {
       embedToken = generateTokenForDashboard(groupId, dashboardId);
@@ -107,6 +115,7 @@ function loadPowerBIDashboard(dashboardName) {
       embedUrl: embedUrl,
       tokenType: models.TokenType.Embed,
     };
+    console.log("config = "+config);
     // Grab the reference to the div HTML element that will host the dashboard.
     var dashboardContainer = $('#embedContainer')[0];
     // Embed the dashboard and display it within the div container.
@@ -156,8 +165,8 @@ function getGroups() {
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4 && xhr.status === 200) {
       var responseJson = JSON.parse(xhr.responseText);
-      var responseArr = responseJson.value;
-      var groupId = '';
+      return responseJson;
+      /*var responseArr = responseJson.value;
       for (var i in responseArr) {
         if (responseArr[i].name === "ryderdemo") {
           groupId = responseArr[i].id;
@@ -167,7 +176,7 @@ function getGroups() {
         return groupId;
       } else {
         return false;
-      }
+      }*/
 
     } else {
       //Not a Success
