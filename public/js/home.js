@@ -1,70 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Ryder Analytics POC</title>
-    <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="css/1-col-portfolio.css" rel="stylesheet">
-    <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.11/js/adal.min.js">
-    </script>
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-</head>
-<body>
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header" style="float: left; padding-left: 400px;">
-                <a style="font-size: 25px;" href="#">Navishare Portal POC</a>
-             
-            </div>
-
-            
-            <!-- /.navbar-collapse -->
-        </div>
-         <div style="float: left; padding-left: 1400px;">
-         <a style="font-size: 20px;"  href="#" onclick="clearToken(); authContext.logOut(); return false;">Log out</a>
-      </div>
-        <!-- /.container -->
-    </nav>
-    <div>
-      Click on the Report/Dashboard to Display
-      <div>
-            <button type="button" onclick="loadPowerBIReport('loadnoreport')">LOAD NO REPORT</button>
-            <button type="button" onclick="loadPowerBIReport('PlantProjectedReport')">PLANT PROJECTED REPORT</button>
-            <button type="button" onclick="loadPowerBIDashboard('eydashboard')">EY DASHBOARD</button>
-      </div>
-    </div>
-    <div>Embed View</div>
-    <div id="embedContainer" style="height: 596.632px;">
-   
-    </div>
-  <script src="js/jquery.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-  <script src="js/bootstrap.min.js"></script>
-  <script src="https://microsoft.github.io/PowerBI-JavaScript/demo/node_modules/powerbi-client/dist/powerbi.js"></script>
-
-<script>
-
-var authContext = new AuthenticationContext({
-  clientId: '18058e13-f49f-4ff2-a29d-ecf8254e7d2a',
-  //https://suntest.azurewebsites.net/.auth/login/aad/callback
-  postLogoutRedirectUri: 'http://suntest.azurewebsites.net/'
-});
-
 function clearToken(){
   delete localStorage.tokenGlobal;
 }
@@ -135,7 +68,6 @@ function generateTokenForDashboard(groupId, dashboardId) {
     } else {
       return "";
     }
- 
 }
 
 function getDashboards(groupId) {
@@ -176,6 +108,9 @@ function getGroups() {
   };*/
 
 }
+
+
+
 
 function loadPowerBIReport(reportName){
   console.log(reportName);
@@ -255,9 +190,9 @@ function generateToken(reportId, embedUrl, groupId){
   xhr.open('POST', 'https://api.powerbi.com/v1.0/myorg/groups/'+groupId+'/reports/'+reportId+'/GenerateToken', true);
   xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.tokenGlobal);
   xhr.setRequestHeader('Content-Type', "application/json; charset=utf-8");
-var bodyParams = {
+  var bodyParams = {
   "accessLevel": "View"
-};
+  };
   xhr.onreadystatechange = function() {
       if (xhr.readyState === 4 && xhr.status === 200) {
         console.log("Generate Token - XHR Response");
@@ -311,11 +246,13 @@ var report = powerbi.embed(embedContainer, config);
  console.log("config");
  console.log(config);
 }
- // Report.off removes a given event handler if it exists.
-//report.off("loaded");
  
-// Report.on will add an event handler which prints to Log window.
-/*report.on("loaded", function() {
+ /*
+ // Report.off removes a given event handler if it exists.
+    //report.off("loaded");
+ 
+   // Report.on will add an event handler which prints to Log window.
+report.on("loaded", function() {
     Log.logText("Loaded");
 });
  
@@ -332,9 +269,4 @@ report.on("saved", function(event) {
         Log.logText('In order to interact with the new report, create a new token and load the new report');
      }
 }
-
-</script>
-    
-</body>
-
-</html>
+ */

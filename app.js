@@ -13,26 +13,7 @@ app.listen(port, function(err) {
 app.use(express.static('public'));
 app.use(express.static('src/views'));
 
-
-app.get('/', function(req, res) {
-	res.send('<h1>Hello C# Corner.</h1>');
-});
-
-app.get('/login', function(req, res) {
-	request('http://www.google.com', function(error, response, body) {
-		console.log('error:', error); // Print the error if one occurred 
-		console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received 
-		console.log('body:', body); // Print the HTML for the Google homepage.
-		res.send(response);
-	});
-	//res.send("Make a sample REST call at Node JS Server");
-	// res.send('<h1>Welcome to PowerBI Reports</h1>');  
-	// res.sendFile('src/views/home.html');
-	//res.sendFile('login.html', { root: './src/views/'});
-});
-
 app.get('/getAadToken', function(req, res) {
-
 	var json = {};
 	request({
 		url: 'https://login.windows.net/common/oauth2/token',
@@ -55,10 +36,5 @@ app.get('/getAadToken', function(req, res) {
 		console.log("Access Token:", json.access_token);
 		res.setHeader('Access-Control-Allow-Origin', 'http://suntest.azurewebsites.net');
 		res.send(json.access_token);
-
 	});
-	/* res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'); // If needed
-	 res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,contenttype'); // If needed
-	 res.setHeader('Access-Control-Allow-Credentials', true); // If needed*/
-
 });
