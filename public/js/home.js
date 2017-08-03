@@ -1,14 +1,12 @@
-function refresh() {
-    setTimeout(function () {
-        location.reload()
-    }, 100);
-}
-
 function clearToken(){
   delete localStorage.tokenGlobal;
 }
 
 function loadPowerBIDashboard(dashboardName) {
+	setTimeout(function () {
+        location.reload()
+    }, 100);
+
   var dashboardId = '', embedUrl = '', embedToken = '', groupsJson = {}, groupId = '';
   //Get groupId by calling Power BI REST Endpoint /groups 
   groupsJson = getGroups();
@@ -119,6 +117,10 @@ function getGroups() {
 
 
 function loadPowerBIReport(reportName){
+	setTimeout(function () {
+        location.reload()
+    }, 100);
+    
   console.log(reportName);
   console.log("Azure Active Directory Token::");
   console.log(localStorage.tokenGlobal);
