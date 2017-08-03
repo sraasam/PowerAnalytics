@@ -113,6 +113,7 @@ function getGroups() {
 
 
 function loadPowerBIReport(reportName){
+	location.reload();
   console.log(reportName);
   console.log("Azure Active Directory Token::");
   console.log(localStorage.tokenGlobal);
