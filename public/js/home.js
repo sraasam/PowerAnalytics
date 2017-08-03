@@ -1,3 +1,9 @@
+function refresh() {
+    setTimeout(function () {
+        location.reload()
+    }, 100);
+}
+
 function clearToken(){
   delete localStorage.tokenGlobal;
 }
@@ -113,7 +119,6 @@ function getGroups() {
 
 
 function loadPowerBIReport(reportName){
-	location.reload();
   console.log(reportName);
   console.log("Azure Active Directory Token::");
   console.log(localStorage.tokenGlobal);
