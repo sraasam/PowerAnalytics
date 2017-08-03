@@ -8,7 +8,6 @@
         </script>
     </head>
     <body>
-    <script src="js/index.js"></script>
        <div style="float: left; padding-left: 400px;">
         <p>
            WELCOME TO NAVISHARE PORTAL - AZURE AD AUTHENTICATION
@@ -27,7 +26,7 @@
           clientId: '18058e13-f49f-4ff2-a29d-ecf8254e7d2a',
           postLogoutRedirectUri: 'http://suntest.azurewebsites.net/'
         });
-        
+
         if (authContext.isCallback(window.location.hash)) {
           // Handle redirect after token requests
           authContext.handleWindowCallback();
