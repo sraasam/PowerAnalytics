@@ -4,48 +4,30 @@
         <title>V2Soft - Navishare Portal POC</title>
         <meta charset="utf-8" />
         <style type="text/css">body { font-family: Tahoma; padding: 3em; }</style>
-        <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.11/js/adal.min.js"></script>
+        <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.11/js/adal.min.js">
+        </script>
     </head>
     <body>
+    <script src="js/index.js"></script>
+       <div style="float: left; padding-left: 400px;">
         <p>
-            NAVISHARE PORTAL - AZURE AD AUTHENTICATION
+           WELCOME TO NAVISHARE PORTAL - AZURE AD AUTHENTICATION
         </p>
-        <p>
-            <a href="#" onclick="authContext.login(); return false;">Log in</a>  
-        </p>
+        </div>
+        <div style="float: left; padding-left: 400px;">
+           <a href="#" onclick="authContext.login(); return false;">Log in</a>
+        </div>
         <p id="username"></p>
         <pre id="api_response"></pre>
-
-        <script type="text/javascript">
+     
+       <script type="text/javascript">
         var tokenGlobal = "";
         // Set up ADAL
         var authContext = new AuthenticationContext({
           clientId: '18058e13-f49f-4ff2-a29d-ecf8254e7d2a',
-
-          //https://suntest.azurewebsites.net/.auth/login/aad/callback
           postLogoutRedirectUri: 'http://suntest.azurewebsites.net/'
         });
-        // Make an AJAX request to the Microsoft Graph API and print the response as JSON.
-        var getCurrentUser = function(access_token) {
-          document.getElementById('api_response').textContent = 'Calling API...';
-          var xhr = new XMLHttpRequest();
-          xhr.open('GET', 'https://graph.microsoft.com/v1.0/me', true);
-          //https://analysis.windows.net/powerbi/api
-
-          xhr.setRequestHeader('Authorization', 'Bearer ' + access_token);
-          xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-              // Do something with the response
-              document.getElementById('api_response').textContent =
-                JSON.stringify(JSON.parse(xhr.responseText), null, '  ');
-            } else {
-              // TODO: Do something with the error (or non-200 responses)
-              document.getElementById('api_response').textContent =
-                'ERROR:\n\n' + xhr.responseText;
-            }
-          };
-          xhr.send();
-        }
+        
         if (authContext.isCallback(window.location.hash)) {
           // Handle redirect after token requests
           authContext.handleWindowCallback();
@@ -56,69 +38,23 @@
               'ERROR:\n\n' + err;
           }
         } else {
-          // If logged in, get access token and make an API request
+          // If logged in, get application access token 
           var user = authContext.getCachedUser();
           if (user) {
             document.getElementById('username').textContent = 'Signed in as: ' + user.userName;
             document.getElementById('api_response').textContent = 'Getting access token...';
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'https://suntest.azurewebsites.net/getAadToken', true);
-            xhr.onreadystatechange = function() {
-              if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log("xhr.responseText");
-                console.log(xhr.responseText);
-                if (xhr.responseText) {
-                  delete localStorage.tokenGlobal;
-                  localStorage.tokenGlobal = xhr.responseText;
-                  window.location.href = "http://suntest.azurewebsites.net/home.html";
-                }
-              } else {
-
+            xhr.open('GET', 'https://suntest.azurewebsites.net/getAadToken', false);
+            xhr.send(null);
+            if (xhr.readyState === 4 && xhr.status === 200) {
+              if (xhr.responseText) {
+                delete localStorage.tokenGlobal;
+                localStorage.tokenGlobal = xhr.responseText;
+                window.location.href = "http://suntest.azurewebsites.net/home.html";
               }
-            };
-            xhr.send();
-
-            // Get an access token to POER BI API and Microsoft Graph API
-            /*authContext.acquireToken(
-                //'https://graph.microsoft.com',
-                'https://analysis.windows.net/powerbi/api',
-                function (error, token) {
-                    if (error || !token) {
-                        // TODO: Handle error obtaining access token
-                        document.getElementById('api_response').textContent =
-                            'ERROR:\n\n' + error;
-                        return;
-                    }
-                    console.log("POWER BI - access Token");
-                    console.log(token);
-                    // Use the access token
-                    //getCurrentUser(token);
-                    if(token){
-                      delete localStorage.tokenGlobal;
-                      localStorage.tokenGlobal = token;                          
-               window.location.href = "http://suntest.azurewebsites.net/home.html";
+            } else {
+             //TODO: Handle Error scenarios
             }
-                }
-            );*/
-
-
-            /*authContext.acquireToken(
-                'https://graph.microsoft.com',
-                function (error, token) {
-                    if (error || !token) {
-                        // TODO: Handle error obtaining access token
-                        document.getElementById('api_response').textContent =
-                            'ERROR:\n\n' + error;
-                        return;
-                    }
-                    console.log("GRAPH API - access Token");
-                    console.log(token);
-                    // Use the access token
-                    getCurrentUser(token);
-
-                }
-            );*/
-
 
           } else {
             document.getElementById('username').textContent = 'Not signed in.';
