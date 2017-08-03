@@ -44,14 +44,10 @@ function loadPowerBIDashboard(dashboardName) {
       tokenType: models.TokenType.Embed,
     };
     console.log("config = "+config);
-     var embedContainerDiv = document.getElementById('embedContainer'); 
-   if (embedContainerDiv) {
-    embedContainerDiv.parentNode.removeChild(embedContainerDiv);
-  }
     // Grab the reference to the div HTML element that will host the dashboard.
-    var dashboardContainer = $('#dashboardContainer')[0];
+    var dashboardContainer = $('#embedContainer')[0];
     // Embed the dashboard and display it within the div container.
-    var dashboard = powerbi.embed(dashboardContainer, config);
+    var dashboard = powerbi.embed(embedContainer, config);
   }
 }
 
@@ -242,12 +238,6 @@ function embedPowerBIReport(embedToken, reportId, embedUrl){
           navContentPaneEnabled: true
       }
   };
-
-  var dashboardContainerDiv = document.getElementById('dashboardContainer');
-  if (dashboardContainerDiv) {
-    dashboardContainerDiv.parentNode.removeChild(dashboardContainerDiv);
-  }
-
 // Get a reference to the embedded report HTML element
 var embedContainer = $('#embedContainer')[0];
 // Embed the report and display it within the div container.
