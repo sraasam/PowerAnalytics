@@ -45,7 +45,7 @@ function loadPowerBIDashboard(dashboardName) {
     };
     console.log("config = "+config);
     // Grab the reference to the div HTML element that will host the dashboard.
-    var dashboardContainer = $('#embedContainer')[0];
+    var dashboardContainer = $('#dashboardContainer')[0];
     // Embed the dashboard and display it within the div container.
     var dashboard = powerbi.embed(dashboardContainer, config);
   }
