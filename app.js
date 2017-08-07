@@ -26,8 +26,8 @@ app.get('/getAadToken', function(req, res) {
 			'scope': 'openid',
 			'resource': 'https://analysis.windows.net/powerbi/api',
 			'client_id': '18058e13-f49f-4ff2-a29d-ecf8254e7d2a',
-			'username': 'sraasam@v2soft.com', //power bi pro master account
-			'password': 'Lemon2016'
+			'username': '**********', //power bi pro master account
+			'password': '**************'
 		}
 
 	}, function(error, response, body) {
