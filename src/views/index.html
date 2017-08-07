@@ -4,19 +4,17 @@
         <title>V2Soft - Navishare Portal POC</title>
         <meta charset="utf-8" />
         <style type="text/css">body { font-family: Tahoma; padding: 3em; }</style>
-        <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.11/js/adal.min.js">
-        </script>
+        <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.11/js/adal.min.js"></script>
     </head>
-    <body>
-       <div style="float: left; padding-left: 400px;">
-        <p>
-           WELCOME TO NAVISHARE PORTAL - AZURE AD AUTHENTICATION
+    <body style="float: left; padding-left: 450px; padding-top: 200px;" bgcolor="#80c1ff">
+    <div>
+        <p style="color: #003366; font-size: 20px;">
+            WELCOME TO NAVISHARE PORTAL - AZURE AD AUTHENTICATION
         </p>
-        </div>
-        <div style="float: left; padding-left: 400px;">
-           <a href="#" onclick="authContext.login(); return false;">Log in</a>
-        </div>
-        <p id="username"></p>
+        <p>
+            <a href="#" style="float: left; padding-left: 250px; font-size: 25px; color: #003366;" onclick="authContext.login(); return false;">Log in</a>  
+        </p>
+        <p id="username" style="float: right; padding-top: 30 px; font-size: 20px; padding-right: 250px; color: #003366;"></p>
         <pre id="api_response"></pre>
      
        <script type="text/javascript">
@@ -60,5 +58,6 @@
           }
         }
         </script>
+        </div>
     </body>
 </html>

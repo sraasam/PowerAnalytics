@@ -20,36 +20,32 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body>
+<body> 
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header" style="float: left; padding-left: 400px;">
-                <a style="font-size: 25px;" href="#">Navishare Portal POC</a>
+            <div  class="navbar-header" style="float: left; padding-left: 400px; ">
+                <p style="font-size: 20px; color: #1aa3ff">Navishare Portal POC</p>
             </div>  
             <!-- /.navbar-collapse -->
         </div>
          <div style="float: left; padding-left: 1400px;">
-         <a style="font-size: 20px;"  href="#" onclick="clearToken(); authContext.logOut(); return false;">Log out</a>
+         <a style="font-size: 20px; color: #1aa3ff" href="#" onclick="clearToken(); authContext.logOut(); return false;">Log out</a>
       </div>
      <!-- /.container -->
     </nav>
     <div>
-      Click on the Report/Dashboard to Display
+      <p style="color: #003366; font-size: 20px;">Click on the Report/Dashboard to Display</p>
       <div>
-            <button type="button" onclick="loadPowerBIReport('loadnoreport')">LOAD NO REPORT</button>
-            <button type="button" onclick="loadPowerBIReport('PlantProjectedReport')">PLANT PROJECTED REPORT</button>
-            <button type="button" onclick="loadPowerBIDashboard('eydashboard')">EY DASHBOARD</button>
+            <button type="button" style="color: #003366; font-size: 15px;" onclick="loadPowerBIReport('loadnoreport')">LOAD NO REPORT</button>
+            <button type="button" style="color: #003366; font-size: 15px;" onclick="loadPowerBIReport('PlantProjectedReport')">PLANT PROJECTED REPORT</button>
+            <button type="button" style="color: #003366; font-size: 15px;" onclick="loadPowerBIDashboard('eydashboard')">EY DASHBOARD</button>
       </div>
     </div>
-    <div>Embed View</div>
-    <div id="embedContainer" style="height: 596.632px;">
-   
-    </div>
-    <div id="dashboardContainer" style="height: 596.632px;">
-   
-    </div>  
+    <div style="padding-top: 10px;"></div>
+    <div><p style="color: #003366; font-size: 20px;">Embed View</p></div>
+    <div id="embedContainer" style="height: 596.632px; color: #80c1ff"></div> 
   <script src="js/jquery.js"></script>
     <!-- Bootstrap Core JavaScript -->
   <script src="js/bootstrap.min.js"></script>
